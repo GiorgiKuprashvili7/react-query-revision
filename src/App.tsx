@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  Button,
+  ButtonGroup,
+  CircularProgress,
+  Container,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { useEffect } from "react";
+
+import { Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
+import PageNotFound from "./components/PageNotFound";
+import UserDetails from "./components/UserDetails";
+import { useAddUser } from "./hooks/useFetchUsers";
 
 function App() {
+  const { mutate } = useAddUser();
+
+  useEffect(() => {
+    mutate({ name: "gio", lastname: "ragaca" });
+  }, [mutate]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <input type="email" />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/user/:id" element={<UserDetails />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </>
   );
 }
 
